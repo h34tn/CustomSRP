@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableLighting: 1
   maxDirectionalLights: 1
-  maxAdditionalLights: 1
+  maxAdditionalLights: 4
   enableShadows: 0
