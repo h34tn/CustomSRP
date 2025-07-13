@@ -3,47 +3,12 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Unity.Collections // 必须在此命名空间内
-{
-    static class NativeArrayExtensions
-    {
-        /// <summary>
-        /// IMPORTANT: Make sure you do not write to the value! There are no checks for this!
-        /// </summary>
-        public static unsafe ref T UnsafeElementAt<T>(this NativeArray<T> array, int index) where T : struct
-        {
-            return ref UnsafeUtility.ArrayElementAsRef<T>(array.GetUnsafeReadOnlyPtr(), index);
-        }
-
-        public static unsafe ref T UnsafeElementAtMutable<T>(this NativeArray<T> array, int index) where T : struct
-        {
-            return ref UnsafeUtility.ArrayElementAsRef<T>(array.GetUnsafePtr(), index);
-        }
-    }
-}
-
-
-// Custom Mobile Render Pipeline
-[CreateAssetMenu(fileName = "MobileRenderPipelineAsset", menuName = "Rendering/Mobile Render Pipeline")]
-public class MobileRenderPipelineAsset : RenderPipelineAsset
-{
-    [Header("Lighting Settings")]
-    public bool enableLighting = true;
-    public int maxAdditionalLights = 4;
-    public bool enableShadows = false;
-    
-    protected override RenderPipeline CreatePipeline()
-    {
-        return new MobileRenderPipeline(this);
-    }
-}
-
 public class MobileRenderPipeline : RenderPipeline
 {
     private MobileRenderPipelineAsset pipelineAsset;
 
     // Shader property IDs
-    private static readonly int _LightColor = Shader.PropertyToID("_LightColor");
+    private static readonly int _LightColors = Shader.PropertyToID("_LightColors");
     private static readonly int _LightDirection = Shader.PropertyToID("_LightDirection");
     private static readonly int _LightPosition = Shader.PropertyToID("_LightPosition");
     private static readonly int _LightCount = Shader.PropertyToID("_LightCount");
@@ -105,7 +70,7 @@ public class MobileRenderPipeline : RenderPipeline
         context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings);
 
         // Render skybox
-        context.DrawSkybox(camera);
+        //context.DrawSkybox(camera);
 
         // Render transparent objects
         sortingSettings.criteria = SortingCriteria.CommonTransparent;
@@ -181,7 +146,7 @@ public class MobileRenderPipeline : RenderPipeline
 
         // Set light arrays to shaders
         lightCmd.SetGlobalInt(_LightCount, lightCount);
-        lightCmd.SetGlobalVectorArray(_LightColor, lightColors);
+        lightCmd.SetGlobalVectorArray(_LightColors, lightColors);
         lightCmd.SetGlobalVectorArray(_LightDirection, lightDirections);
         lightCmd.SetGlobalVectorArray(_LightPosition, lightPositions);
 
@@ -215,5 +180,20 @@ public class MobileRenderPipeline : RenderPipeline
         }
 
         return brightestLightIndex;
+    }
+}
+static class NativeArrayExtensions
+{
+    /// <summary>
+    /// IMPORTANT: Make sure you do not write to the value! There are no checks for this!
+    /// </summary>
+    public static unsafe ref T UnsafeElementAt<T>(this NativeArray<T> array, int index) where T : struct
+    {
+        return ref UnsafeUtility.ArrayElementAsRef<T>(array.GetUnsafeReadOnlyPtr(), index);
+    }
+
+    public static unsafe ref T UnsafeElementAtMutable<T>(this NativeArray<T> array, int index) where T : struct
+    {
+        return ref UnsafeUtility.ArrayElementAsRef<T>(array.GetUnsafePtr(), index);
     }
 }

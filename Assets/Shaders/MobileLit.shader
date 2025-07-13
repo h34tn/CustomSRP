@@ -34,7 +34,7 @@ Shader "Mobile/Lit"
             float4 _MainLightColor;
             float4 _AmbientLight;
             int _LightCount;
-            float4 _LightColor[8];
+            float4 _LightColors[8];
             float4 _LightDirection[8];
             float4 _LightPosition[8];
             
@@ -88,7 +88,7 @@ Shader "Mobile/Lit"
                 // Additional lights
                 for (int i = 0; i < _LightCount && i < 8; i++)
                 {
-                    float3 lightColor = _LightColor[i].rgb;
+                    float3 lightColor = _LightColors[i].rgb;
                     float3 lightDirection = _LightDirection[i].xyz;
                     float4 lightPosition = _LightPosition[i];
                     

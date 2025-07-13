@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ee501e0aa0d58c419a3066990ebe4b1, type: 3}
+  m_Script: {fileID: 11500000, guid: d2b0e273e1c89a04d871d2bda6abf323, type: 3}
   m_Name: MobileRenderPipelineAsset
   m_EditorClassIdentifier: 
   enableLighting: 1
-  maxDirectionalLights: 1
   maxAdditionalLights: 4
   enableShadows: 0
